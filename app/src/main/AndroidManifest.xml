@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+<!--    android:networkSecurityConfig="@xml/network"-->
+<!--    tools:replace="android:networkSecurityConfig"-->
     <application
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
@@ -19,7 +21,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544/6300978111"/>
+            android:value="ca-app-pub-2265012501853125~9962859233"/>
 
 
 <!--        <activity-->

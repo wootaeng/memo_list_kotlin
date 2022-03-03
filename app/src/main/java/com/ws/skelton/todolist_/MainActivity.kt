@@ -2,17 +2,23 @@ package com.ws.skelton.todolist_
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.byappsoft.huvleadlib.*
+
+
 import com.byappsoft.sap.launcher.Sap_act_main_launcher
 import com.byappsoft.sap.utils.Sap_Func
 import com.google.android.gms.ads.AdRequest
+
+
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
@@ -28,6 +34,7 @@ class MainActivity : AppCompatActivity() , OnFunListener{
     //Ads
     lateinit var bav: BannerAdView
     lateinit var mAdView : AdView
+    lateinit var bavd: InterstitialAdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +46,8 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         setContentView(binding.root)
 
         db = MemoDatabase.getInstance(this)!!
+
+
 
         binding.btnAdd.setOnClickListener{
             val memo = MemoEntity(null, binding.editTextMemo.text.toString())
@@ -58,6 +67,12 @@ class MainActivity : AppCompatActivity() , OnFunListener{
 //            insertMemo(memo)
 //            handled
 //            binding.editTextMemo.requestFocus()
+//        }
+
+//        binding.moveBtn.setOnClickListener {
+//            val intent = Intent(this, AdTestActivity::class.java)
+//            startActivity(intent)
+//            finish()
 //        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -80,8 +95,15 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         // huvleView apply
         Sap_Func.setNotiBarLockScreen(this,false)
         Sap_act_main_launcher.initsapStart(this,"bynetwork",true,true)
+        Log.d("huvleNoti", "success" )
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        bav.destroy()
+        mAdView.destroy()
+
+    }
 
 
     fun insertMemo(memo : MemoEntity){
@@ -132,20 +154,20 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         deleteTask.execute()
     }
 
-    fun updateMemo(memo: MemoEntity){
-        val updateTask = object : AsyncTask<Unit,Unit,Unit>(){
-            override fun doInBackground(vararg p0: Unit?) {
-                db.memoDAO().update(memo)
-            }
-
-            override fun onPostExecute(result: Unit?) {
-                super.onPostExecute(result)
-                getAllMemos()
-            }
-        }
-
-        updateTask.execute()
-    }
+//    fun updateMemo(memo: String){
+//        val updateTask = object : AsyncTask<Unit,Unit,Unit>(){
+//            override fun doInBackground(vararg p0: Unit?) {
+//                db.memoDAO().update(memo)
+//            }
+//
+//            override fun onPostExecute(result: Unit?) {
+//                super.onPostExecute(result)
+//                getAllMemos()
+//            }
+//        }
+//
+//        updateTask.execute()
+//    }
 
     fun setRecyclerView(memoList : List<MemoEntity>){
 
@@ -156,9 +178,10 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         deleteMemo(memo)
     }
 
-    override fun onUpdateListener(memo: MemoEntity) {
-        updateMemo(memo)
-    }
+//    override fun onUpdateListener(content: String) {
+//        updateMemo(content)
+//    }
+
 
     fun softkeyboardHide() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -167,7 +190,7 @@ class MainActivity : AppCompatActivity() , OnFunListener{
 
     private fun setHuvleAD(){
         bav = binding.bannerView
-        bav.setPlacementID("test") // 320*50 banner testID , 300*250 banner test ID "testbig"
+        bav.setPlacementID("Z519z8m8q7") // 320*50 banner testID , 300*250 banner test ID "testbig"
         bav.setShouldServePSAs(false)
         bav.setClickThroughAction(ANClickThroughAction.OPEN_DEVICE_BROWSER)
         bav.setAdSize(320, 50) //bav.setAdSize(300, 250);
@@ -184,7 +207,6 @@ class MainActivity : AppCompatActivity() , OnFunListener{
                 } else {
                     Log.v("HuvleBANNER", "Ad request failed: $errorCode")
                 }
-//                setGoogleAD()
             }
             override fun onAdLoaded(ba: com.byappsoft.huvleadlib.AdView) {
                 Log.v("HuvleBANNER", "The Ad Loaded!")
@@ -199,6 +221,7 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         bav.setAdListener(adListener)
         bav.init(this)
     }
+
     private fun setGoogleAD(){
         MobileAds.initialize(this) {}
         mAdView = binding.gadView
@@ -219,5 +242,8 @@ class MainActivity : AppCompatActivity() , OnFunListener{
             override fun onAdClosed() {}
         }
     }
+
+
+
 
 }

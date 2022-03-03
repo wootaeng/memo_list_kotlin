@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ws.skelton.todolist_.databinding.ActivityMainBinding
 import com.ws.skelton.todolist_.databinding.ItemMemoBinding
+
 
 class MyAdapter(val context : Context,
                 var list: List<MemoEntity>,
@@ -31,11 +33,13 @@ class MyAdapter(val context : Context,
             }
         })
 
-//        holder.update.setOnClickListener(object : View.OnClickListener{
-//            override fun onClick(p0: View?) {
-//                onFunListener.onUpdateListener(memo)
-//            }
-//        })
+//        holder.bind(list[position])
+//
+//        holder.update.setOnClickListener {
+//            memoEn = memo
+//            val myCustomDialog = UpdateDialog(holder.update.context,this)
+//            myCustomDialog.show()
+//        }
 
 
 
@@ -56,10 +60,34 @@ class MyAdapter(val context : Context,
 
 
 
-    inner class MyViewHolder(val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root){
+//    UpdateDialogInterface
+    inner class MyViewHolder(val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root)
+         {
+
+//        lateinit var memoEntity: MemoEntity
 
         val memo = binding.textviewMemo
         val del = binding.deletBtn
-//        val update = binding.updateBtn
+        val update = binding.updateBtn
+
+
+//        fun bind(currentMemo : MemoEntity){
+//            binding.memo = currentMemo
+//
+//            update.setOnClickListener {
+//                memoEntity = currentMemo
+//                val myCustomDialog = UpdateDialog(update.context,this)
+//                myCustomDialog.show()
+//            }
+//        }
+//
+//
+//        override fun onOkButtonClicked(content: String) {
+//
+//            val updateMeMo = MemoEntity(memoEntity.id,memoEntity.memo)
+//
+//        }
+
+
     }
 }

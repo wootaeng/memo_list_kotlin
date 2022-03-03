@@ -4,5 +4,5 @@ interface OnFunListener {
 
     fun onDeleteListener(memo: MemoEntity)
 
-    fun onUpdateListener(memo: MemoEntity)
+
 }

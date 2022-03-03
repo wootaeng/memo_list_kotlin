@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "com.ws.skelton.todolist_"
         minSdk 21
-        targetSdk 30
-        versionCode 3
-        versionName "2.0"
+        targetSdk 31
+        versionCode 6
+        versionName "3.1"
 
         multiDexEnabled true
 
@@ -20,6 +20,7 @@ android {
     }
     buildFeatures{
         viewBinding true
+        dataBinding true
     }
 
     buildTypes {
@@ -44,6 +45,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -58,14 +61,21 @@ dependencies {
     //huvle
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
     implementation 'com.byappsoft.huvleadlib:HuvleAdLib:1.2.2'
-    implementation 'com.byappsoft.sap:HuvleSDK:5.1.0'
+    implementation 'com.byappsoft.sap:HuvleSDK:5.4.1'
+
+    //Exelbid
+    implementation 'com.onnuridmc.exelbid:exelbid:1.7.3'
 
     //Room Database
-    def roomVersion = "2.3.0"
+    def roomVersion = "2.4.1"
 
+    //noinspection GradleDependency
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$roomVersion")
+
+    //courotine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
 
 }
