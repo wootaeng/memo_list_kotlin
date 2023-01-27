@@ -8,6 +8,7 @@ plugins {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def ADMOB_KEY = properties.getProperty('google_adMob_adId')
 
 android {
     compileSdk 33
@@ -23,8 +24,13 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        manifestPlaceholders = [AdMob: ADMOB_KEY]
+
         buildConfigField "String", "ADFIT_KEY", properties['kakao_adfit_Id']
         buildConfigField "String", "ADMOB_KEY", properties['google_adMob_adId']
+
+        resValue "string", "ADMOB", properties['google_adMob_adId']
+
     }
     buildFeatures{
         viewBinding true
