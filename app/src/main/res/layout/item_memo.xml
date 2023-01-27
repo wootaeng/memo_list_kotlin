@@ -5,7 +5,7 @@
     <data>
         <variable
             name="memo"
-            type="com.ws.skelton.todolist_.MemoEntity" />
+            type="com.ws.skelton.todolist_.room.MemoEntity" />
     </data>
 
 

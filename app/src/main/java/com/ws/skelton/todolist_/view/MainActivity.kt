@@ -1,40 +1,48 @@
-package com.ws.skelton.todolist_
+package com.ws.skelton.todolist_.view
+
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.os.AsyncTask
-import android.os.Bundle
-
+import android.os.*
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.byappsoft.huvleadlib.*
-
-
-import com.byappsoft.sap.launcher.Sap_act_main_launcher
-import com.byappsoft.sap.utils.Sap_Func
 import com.google.android.gms.ads.AdRequest
-
-
-import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.common.util.CollectionUtils.listOf
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import com.kakao.adfit.ads.ba.BannerAdView
+import com.ws.skelton.todolist_.BuildConfig.ADFIT_KEY
+import com.ws.skelton.todolist_.MyAdapter
 import com.ws.skelton.todolist_.databinding.ActivityMainBinding
+import com.ws.skelton.todolist_.room.MemoDatabase
+import com.ws.skelton.todolist_.room.MemoEntity
+import com.ws.skelton.todolist_.util.AnalyticsUtils
+import com.ws.skelton.todolist_.util.ItemDecorator
+import com.ws.skelton.todolist_.util.OnFunListener
+import java.util.*
+
 
 @SuppressLint("StaticFieldLeak")
-class MainActivity : AppCompatActivity() , OnFunListener{
+class MainActivity : AppCompatActivity() , OnFunListener {
+
+    private val TAG = "MainActivity"
 
     private lateinit var binding: ActivityMainBinding
     lateinit var db : MemoDatabase
     var memoList :List<MemoEntity> = listOf<MemoEntity>()
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     //Ads
-    lateinit var bav: BannerAdView
-    lateinit var mAdView : AdView
-    lateinit var bavd: InterstitialAdView
+    lateinit var mAdView : com.google.android.gms.ads.AdView
+    var mAdfitView: BannerAdView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +52,15 @@ class MainActivity : AppCompatActivity() , OnFunListener{
 //        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
+        // Obtain the FirebaseAnalytics instance.
+        firebaseAnalytics = Firebase.analytics
+        AnalyticsUtils.sendScreen("Main")
+
+//        launchInterstitialAD()
+
 
         db = MemoDatabase.getInstance(this)!!
 
@@ -56,6 +73,7 @@ class MainActivity : AppCompatActivity() , OnFunListener{
             binding.editTextMemo.requestFocus()
 //            softkeyboardHide()
         }
+
 //        binding.editTextMemo.setOnEditorActionListener { v, actionId, event ->
 //            var handled = false
 //            if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -79,8 +97,8 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         binding.recyclerView.addItemDecoration(ItemDecorator(20))
         getAllMemos()
 
-        setHuvleAD()
         setGoogleAD()
+
 
     }
 
@@ -92,16 +110,18 @@ class MainActivity : AppCompatActivity() , OnFunListener{
 
     override fun onResume() {
         super.onResume()
-        // huvleView apply
-        Sap_Func.setNotiBarLockScreen(this,false)
-        Sap_act_main_launcher.initsapStart(this,"bynetwork",true,true)
-        Log.d("huvleNoti", "success" )
+        mAdView.resume()
+        mAdfitView?.resume()
+
+
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
-        bav.destroy()
         mAdView.destroy()
+        mAdfitView?.destroy()
 
     }
 
@@ -154,7 +174,7 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         deleteTask.execute()
     }
 
-//    fun updateMemo(memo: String){
+//    fun updateMemo(memo: MemoEntity){
 //        val updateTask = object : AsyncTask<Unit,Unit,Unit>(){
 //            override fun doInBackground(vararg p0: Unit?) {
 //                db.memoDAO().update(memo)
@@ -178,8 +198,8 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         deleteMemo(memo)
     }
 
-//    override fun onUpdateListener(content: String) {
-//        updateMemo(content)
+//    override fun onUpdateListener(memo: MemoEntity) {
+//        updateMemo(memo)
 //    }
 
 
@@ -188,39 +208,19 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         imm.hideSoftInputFromWindow(binding.editTextMemo.windowToken, 0)
     }
 
-    private fun setHuvleAD(){
-        bav = binding.bannerView
-        bav.setPlacementID("Z519z8m8q7") // 320*50 banner testID , 300*250 banner test ID "testbig"
-        bav.setShouldServePSAs(false)
-        bav.setClickThroughAction(ANClickThroughAction.OPEN_DEVICE_BROWSER)
-        bav.setAdSize(320, 50) //bav.setAdSize(300, 250);
-        // Resizes the container size to fit the banner ad
-        bav.setResizeAdToFitContainer(true)
-//        bav.setExpandsToFitScreenWidth(true)
-        val adListener: AdListener = object : AdListener {
-            override fun onAdRequestFailed(
-                bav: com.byappsoft.huvleadlib.AdView,
-                errorCode: ResultCode
-            ) {
-                if (errorCode == null) {
-                    Log.v("HuvleBANNER", "Call to loadAd failed")
-                } else {
-                    Log.v("HuvleBANNER", "Ad request failed: $errorCode")
-                }
-            }
-            override fun onAdLoaded(ba: com.byappsoft.huvleadlib.AdView) {
-                Log.v("HuvleBANNER", "The Ad Loaded!")
-            }
-            override fun onAdLoaded(nativeAdResponse: NativeAdResponse) {}
-            override fun onAdExpanded(bav: com.byappsoft.huvleadlib.AdView) {}
-            override fun onAdCollapsed(bav: com.byappsoft.huvleadlib.AdView) {}
-            override fun onAdClicked(bav: com.byappsoft.huvleadlib.AdView) {}
-            override fun onAdClicked(adView: com.byappsoft.huvleadlib.AdView, clickUrl: String) {}
-            override fun onLazyAdLoaded(adView: com.byappsoft.huvleadlib.AdView) {}
-        }
-        bav.setAdListener(adListener)
-        bav.init(this)
-    }
+//    private val mDelayHandler: Handler by lazy {
+//        Handler()
+//    }
+
+
+//    private fun hideAdView() {
+//        if(mAdView != null) {
+//            mAdView.visibility = View.GONE
+//        }
+//        if (mAdfitView != null) {
+//            mAdfitView.visibility = View.GONE
+//        }
+//    }
 
     private fun setGoogleAD(){
         MobileAds.initialize(this) {}
@@ -229,13 +229,16 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         mAdView.loadAd(adRequest)
         mAdView.adListener = object: com.google.android.gms.ads.AdListener() {
             override fun onAdLoaded() {
-                Log.v("GoogleAD", "The Ad Loaded!")
+                Log.e("GoogleAD", "The Ad Loaded!")
+                mAdView.visibility = View.VISIBLE
+
             }
             override fun onAdFailedToLoad(adError : LoadAdError) {
-                // TODO - Adknowva SDK Library
-                bav.startAd()
-                // TODO - Adknowva SDK Library
-                Log.v("GoogleAD", "The Ad failed!")
+                mAdView.visibility = View.GONE
+                setAdfit()
+                val responseInfo = adError.responseInfo
+                Log.e("GoogleAd", responseInfo.toString())
+
             }
             override fun onAdOpened() {}
             override fun onAdClicked() {}
@@ -243,7 +246,31 @@ class MainActivity : AppCompatActivity() , OnFunListener{
         }
     }
 
+    private fun setAdfit(){
+        mAdfitView = binding.adView // 배너 광고 뷰
+        mAdfitView!!.setClientId(ADFIT_KEY)  // 광고단위 ID 설정
+        mAdfitView!!.setAdListener(object  : com.kakao.adfit.ads.AdListener{
+            override fun onAdLoaded() {
+                // 배너 광고 노출 완료 시 호출
+                Log.e("Adfit Banner","Adfit loaded")
+                mAdfitView!!.visibility = View.VISIBLE
+                AnalyticsUtils.setEvent(firebaseAnalytics,"adfit","adLoad")
+            }
 
+            override fun onAdFailed(errorCode: Int) {
+                // 배너 광고 노출 실패 시 호출
+                Log.e("Adfit Banner","Failed to load banner :: errorCode = $errorCode")
+            }
+
+            override fun onAdClicked() {
+                // 배너 광고 클릭 시 호출
+                Log.e("Adfit Banner","Banner is clicked")
+            }
+        })
+        mAdfitView!!.loadAd()
+    }
 
 
 }
+
+

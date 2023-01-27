@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ws.skelton.todolist_.databinding.ActivityMainBinding
 import com.ws.skelton.todolist_.databinding.ItemMemoBinding
+import com.ws.skelton.todolist_.room.MemoEntity
+import com.ws.skelton.todolist_.util.OnFunListener
 
 
 class MyAdapter(val context : Context,
                 var list: List<MemoEntity>,
-                var onFunListener: OnFunListener): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+                var onFunListener: OnFunListener
+): RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

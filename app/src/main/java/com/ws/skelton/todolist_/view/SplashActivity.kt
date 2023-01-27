@@ -1,4 +1,4 @@
-package com.ws.skelton.todolist_
+package com.ws.skelton.todolist_.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.ws.skelton.todolist_
+package com.ws.skelton.todolist_.util
 
 import android.graphics.Canvas
 import android.graphics.Color

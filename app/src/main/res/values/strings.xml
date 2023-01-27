@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TodoCheck</string>
+    <string name="com.google.firebase.crashlytics.mapping_file_id">none</string>
 </resources>

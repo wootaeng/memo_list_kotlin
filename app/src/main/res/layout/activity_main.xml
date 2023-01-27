@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_line_1"
@@ -38,16 +38,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <Button-->
-<!--        android:id="@+id/moveBtn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="이동"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/guide_line_2"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/guide_line_1"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/title"/>-->
+    <!--    <Button-->
+    <!--        android:id="@+id/moveBtn"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="이동"-->
+    <!--        android:textSize="20sp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/guide_line_2"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/guide_line_1"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/title"/>-->
 
 
     <EditText
@@ -75,41 +75,42 @@
         app:layout_constraintEnd_toEndOf="@+id/guide_line_2"
         app:layout_constraintStart_toStartOf="@+id/guide_line_1"
         app:layout_constraintTop_toTopOf="@+id/editText_memo" />
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/btn_add"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:background="@drawable/button_green"-->
-<!--        android:text="Add"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textSize="20dp"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/editText_memo"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/editText_memo"-->
-<!--         />-->
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/moveBtn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:background="@drawable/button_green"-->
-<!--        android:text="이동"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textSize="20dp"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/btn_add"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/editText_memo"-->
-<!--        />-->
+    <!--    <androidx.appcompat.widget.AppCompatButton-->
+    <!--        android:id="@+id/btn_add"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="10dp"-->
+    <!--        android:background="@drawable/button_green"-->
+    <!--        android:text="Add"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textSize="20dp"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/editText_memo"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/editText_memo"-->
+    <!--         />-->
+    <!--    <androidx.appcompat.widget.AppCompatButton-->
+    <!--        android:id="@+id/moveBtn"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="10dp"-->
+    <!--        android:background="@drawable/button_green"-->
+    <!--        android:text="이동"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textSize="20dp"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btn_add"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/editText_memo"-->
+    <!--        />-->
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/gadView"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_memo">
@@ -125,14 +126,16 @@
     </FrameLayout>
 
 
-    <com.byappsoft.huvleadlib.BannerAdView
-        android:id="@+id/banner_view"
+
+    <com.kakao.adfit.ads.ba.BannerAdView
+        android:id="@+id/adView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -141,10 +144,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-2265012501853125/9120458967"
+        ads:adUnitId="ca-app-pub-2265012501853125~9962859233"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.gms.ads.AdView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
